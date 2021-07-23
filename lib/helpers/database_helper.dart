@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:flutter_quizz/models/detail.dart';
 import 'package:flutter_quizz/models/grocery.dart';
 import 'package:path/path.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,7 +14,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'groceries.db');
+    String path = join(documentsDirectory.path, 'kendb.db');
     return await openDatabase(
       path,
       version: 1,
@@ -27,6 +27,14 @@ class DatabaseHelper {
       CREATE TABLE groceries(
           id INTEGER PRIMARY KEY,
           name TEXT
+      )
+      ''');
+    await db.execute('''
+      CREATE TABLE detail(
+          id INTEGER PRIMARY KEY,
+          weight INTEGER,
+          height INTEGER,
+          createdDate TEXT,
       )
       ''');
   }
@@ -54,5 +62,33 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.update('groceries', grocery.toMap(),
         where: "id = ?", whereArgs: [grocery.id]);
+  }
+
+  Future<List<Detail>> getDetailList() async {
+    Database db = await instance.database;
+    var data = await db.query('detail', orderBy: 'id');
+    List<Detail> list =
+        data.isNotEmpty ? data.map((e) => Detail.fromMap(e)).toList() : [];
+    return list;
+  }
+
+  Future<int> addDetail(Detail detail) async {
+    Database db = await instance.database;
+    return await db.insert('detail', detail.toMap());
+  }
+
+  Future<Detail?> getDetailById(int id) async {
+    Database db = await instance.database;
+    var result = await db.query('detail', where: 'id=?', whereArgs: [id]);
+    if (result.isEmpty) {
+      throw new Exception('ID NOT FOUND ');
+    }
+    return Detail.fromMap(result.first);
+  }
+
+    Future<int> updateDetail(Detail detail) async {
+    Database db = await instance.database;
+    return await db.update('groceries', detail.toMap(),
+        where: "id = ?", whereArgs: [detail.id]);
   }
 }
