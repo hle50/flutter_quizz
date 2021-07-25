@@ -47,7 +47,7 @@ class Home extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Container(
-                            margin: EdgeInsets.only(left: 5.0),
+                            margin: EdgeInsets.only(right: 5.0),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 color: Colors.white
@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
                         ),
                         Expanded(
                           child: Container(
-                            margin: EdgeInsets.only(left: 5.0),
+                            margin: EdgeInsets.only(left: 10.0),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 color: Colors.white
