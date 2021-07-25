@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quizz/screens/home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'helpers/database_helper.dart';
 import 'models/grocery.dart';
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.orange,
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
       home: Home(),
     );
